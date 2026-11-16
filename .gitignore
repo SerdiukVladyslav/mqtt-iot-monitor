@@ -1,0 +1,4 @@
+venv/
+*.o
+iot_monitor
+*.log
