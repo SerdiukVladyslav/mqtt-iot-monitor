@@ -109,6 +109,7 @@ All required test scenarios were verified locally:
 3. **JSON Parsing & Display:** Validated readable console formatting (`[HH:MM:SS] Device: ...`) and optional log file output (`-o monitor.log`).
 4. **Threshold Detection & Alert Publishing:**
     Monitored alerts in real-time by subscribing to the alert topic:
+    
     ```bash
     mosquitto_sub -h localhost -t 'iot/devices/+/alert' -v
     ```
@@ -117,6 +118,7 @@ All required test scenarios were verified locally:
 6. **Broker Disconnection & Reconnection:** Restarted the Mosquitto daemon while `./iot_monitor` was running; the client detected the disconnect, automatically reconnected, and resumed telemetry processing.
 7. **Graceful Shutdown & Memory Safety:**
     Terminated the process via `SIGINT` (`Ctrl+C`) under Valgrind to verify memory management:
+
     ```bash
     valgrind --leak-check=full --show-leak-kinds=all ./iot_monitor
     ```
