@@ -56,14 +56,18 @@ This produces the `./iot_monitor` executable in the project root directory.
 
 1. Start the Python Telemetry Simulator:
 
+    ```bash
     python3 -m venv venv
     source venv/bin/activate
     pip install "paho-mqtt>=2.0"
     python mqtt_simulator.py
+    ```
 
 2. Start the C Monitoring Application:
 
+    ```bash
     ./iot_monitor -H localhost -P 1883 -o monitor.log
+    ```
 
 ### Command-Line Options
 | Option | Description | Default |
@@ -79,7 +83,9 @@ This produces the `./iot_monitor` executable in the project root directory.
 - **Topic:** `iot/devices/+/telemetry`
 - **Payload Format:**
 
+    ```bash
     {"device_id": "sensor_01", "temperature": 24.5, "humidity": 56.2, "battery": 85, "timestamp": 1794301200}
+    ```
 
 ### Alert Publishing
 Alerts are triggered when telemetry exceeds the following thresholds:
@@ -90,7 +96,9 @@ Alerts are triggered when telemetry exceeds the following thresholds:
 - **Topic:** `iot/devices/<device_id>/alert`
 - **Payload Format:**
 
+    ```bash
     {"device_id": "sensor_01", "alert": "LOW_BATTERY", "value": 15, "timestamp": 1794301200}
+    ```
 
 ## Testing Scenarios & Verification
 
