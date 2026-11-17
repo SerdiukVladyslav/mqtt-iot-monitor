@@ -107,10 +107,20 @@ All required test scenarios were verified locally:
 1. **Broker Connection:** Verified successful connection to `localhost:1883` and wildcard subscription to `iot/devices/+/telemetry`.
 2. **Multi-Device Tracking:** Confirmed concurrent tracking and state updates for `sensor_01`, `sensor_02`, and `sensor_03`.
 3. **JSON Parsing & Display:** Validated readable console formatting (`[HH:MM:SS] Device: ...`) and optional log file output (`-o monitor.log`).
-4. **Threshold Detection & Alert Publishing:** Monitored `iot/devices/+/alert` using `mosquitto_sub -h localhost -t 'iot/devices/+/alert' -v` and confirmed accurate JSON payloads for `HIGH_TEMPERATURE`, `HIGH_HUMIDITY`, and `LOW_BATTERY`.
+4. **Threshold Detection & Alert Publishing:**
+    Monitored alerts in real-time by subscribing to the alert topic:
+    ```bash
+    mosquitto_sub -h localhost -t 'iot/devices/+/alert' -v
+    ```
+    Confirmed accurate JSON payloads for `HIGH_TEMPERATURE`, `HIGH_HUMIDITY`, and `LOW_BATTERY`.
 5. **Malformed JSON Resilience:** Tested resilience against invalid payloads using `mosquitto_pub` with broken JSON strings and wrong field types; the application logged parsing errors cleanly without crashing.
 6. **Broker Disconnection & Reconnection:** Restarted the Mosquitto daemon while `./iot_monitor` was running; the client detected the disconnect, automatically reconnected, and resumed telemetry processing.
-7. **Graceful Shutdown & Memory Safety:** Terminated the process via `SIGINT` (`Ctrl+C`) under `valgrind --leak-check=full --show-leak-kinds=all ./iot_monitor`, confirming `0 errors` and `All heap blocks were freed -- no leaks are possible`.
+7. **Graceful Shutdown & Memory Safety:**
+    Terminated the process via `SIGINT` (`Ctrl+C`) under Valgrind to verify memory management:
+    ```bash
+    valgrind --leak-check=full --show-leak-kinds=all ./iot_monitor
+    ```
+    Confirmed `0 errors` and `All heap blocks were freed -- no leaks are possible`.
 
 ## Known Limitations
 - **In-Memory State Persistence:** Device telemetry history is stored in volatile RAM and resets upon application restart.
